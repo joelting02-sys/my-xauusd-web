@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>黄金交易学院 | K线形态大全</title>
+    <style>
+        /* === 核心样式设计 === */
+        :root {
+            --primary-gold: #D4AF37; /* 尊贵金 */
+            --dark-bg: #121212;      /*以此为底色 */
+            --card-bg: #1E1E1E;      /* 卡片颜色 */
+            --text-main: #E0E0E0;
+            --text-sub: #A0A0A0;
+            --bullish: #00E676;      /* 涨 - 鲜绿 */
+            --bearish: #FF5252;      /* 跌 - 鲜红 */
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        /* 头部区域 */
+        header {
+            text-align: center;
+            padding: 50px 20px;
+            border-bottom: 1px solid #333;
+            max-width: 1000px;
+            margin: 0 auto 40px auto;
+        }
+
+        h1 {
+            color: var(--primary-gold);
+            font-size: 2.5rem;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        p.subtitle {
+            color: var(--text-sub);
+            font-size: 1.1rem;
+            margin-top: 15px;
+        }
+
+        /* 筛选按钮 */
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: 1px solid #444;
+            color: var(--text-sub);
+            padding: 8px 24px;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            font-size: 15px;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--primary-gold);
+            color: var(--primary-gold);
+        }
+
+        .filter-btn.active {
+            background: var(--primary-gold);
+            color: #000;
+            border-color: var(--primary-gold);
+            font-weight: bold;
+        }
+
+        /* 卡片网格布局 */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-bottom: 50px;
+        }
+
+        /* 单个知识卡片 */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #333;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            border-color: #555;
+        }
+
+        /* 卡片顶部图示区域（模拟K线图背景） */
+        .card-visual {
+            height: 160px;
+            background: linear-gradient(to bottom, #252525, #1e1e1e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid #333;
+            position: relative;
+        }
+        
+        .visual-text {
+            color: #555;
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        /* 卡片内容区 */
+        .card-content { padding: 24px; }
+
+        .badge {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+        .badge.bullish { background-color: rgba(0, 230, 118, 0.15); color: var(--bullish); }
+        .badge.bearish { background-color: rgba(255, 82, 82, 0.15); color: var(--bearish); }
+
+        h3 { margin: 0 0 10px 0; color: #fff; font-size: 1.3rem; }
+        
+        p.desc { 
+            font-size: 14px; 
+            color: #bbb; 
+            margin-bottom: 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>XAUUSD 交易图鉴</h1>
+        <p class="subtitle">专业的黄金 K 线形态与技术分析知识库</p>
+    </header>
+
+    <div class="filter-container">
+        <button class="filter-btn active" onclick="filterData('all')">全部知识</button>
+        <button class="filter-btn" onclick="filterData('bullish')">🟢 看涨信号</button>
+        <button class="filter-btn" onclick="filterData('bearish')">🔴 看跌信号</button>
+    </div>
+
+    <div class="grid-container" id="content-area">
+        </div>
+
+    <script>
+        // === 这里是你的知识库数据 ===
+        // 你可以随意修改下面的文字内容
+        const patterns = [
+            {
+                title: "看涨吞没 (Bullish Engulfing)",
+                type: "bullish",
+                desc: "强烈的底部反转信号。第一根为小阴线，第二根大阳线的实体完全包住了前一根阴线的实体，代表多头强势反击。",
+                visual: "🟢 阳包阴"
+            },
+            {
+                title: "黄昏之星 (Evening Star)",
+                type: "bearish",
+                desc: "顶部反转形态。由三根K线组成：一根大阳线，一根跳空高开的小星线，和一根向下的大阴线，预示上涨结束。",
+                visual: "🔴 顶部三星"
+            },
+            {
+                title: "锤子线 (Hammer)",
+                type: "bullish",
+                desc: "出现在下跌趋势中。实体很小，下影线很长（实体的2倍以上），没有上影线，表明下方支撑强劲。",
+                visual: "🟢 🔨 锤子"
+            },
+            {
+                title: "双顶结构 (Double Top)",
+                type: "bearish",
+                desc: "经典的'M'头形态。价格两次冲击同一高点失败，随后跌破颈线，是强烈的卖出信号。",
+                visual: "🔴 M头"
+            },
+            {
+                title: "启明星 (Morning Star)",
+                type: "bullish",
+                desc: "与黄昏之星相反，出现在底部。大阴线 + 跳空低开星线 + 大阳线，如同黎明前的曙光。",
+                visual: "🟢 底部三星"
+            },
+            {
+                title: "乌云盖顶 (Dark Cloud Cover)",
+                type: "bearish",
+                desc: "上升趋势中，大阳线后出现一根高开低走的大阴线，且收盘价刺入前一根阳线实体的一半以下。",
+                visual: "🔴 阴切入阳"
+            }
+        ];
+
+        // === 自动生成网页的代码 ===
+        const container = document.getElementById('content-area');
+
+        function renderCards(filterType) {
+            container.innerHTML = ''; 
+            
+            patterns.forEach(item => {
+                if (filterType !== 'all' && item.type !== filterType) return;
+
+                const card = document.createElement('div');
+                card.className = 'card';
+                
+                const badgeClass = item.type === 'bullish' ? 'bullish' : 'bearish';
+                const badgeText = item.type === 'bullish' ? '看涨多头' : '看跌空头';
+
+                card.innerHTML = `
+                    <div class="card-visual">
+                        <span class="visual-text" style="font-size:20px; font-weight:bold; color:#666;">${item.visual}</span>
+                    </div>
+                    <div class="card-content">
+                        <span class="badge ${badgeClass}">${badgeText}</span>
+                        <h3>${item.title}</h3>
+                        <p class="desc">${item.desc}</p>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterData(type) {
+            renderCards(type);
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // 页面加载时运行
+        renderCards('all');
+    </script>
+</body>
+</html>
